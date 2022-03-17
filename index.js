@@ -66,5 +66,11 @@ const startQuestions =() => {
         }
     });
 };
-
-
+// CREATING THE FUNCTION FOR THE VIEW DEPARTMENT 
+const viewDepartment = () => {
+    connection.query('SELECT * FROM department',function(err,res) {
+        if(err) throw err;
+        console.table(res);
+        startQuestions();
+    });
+};
