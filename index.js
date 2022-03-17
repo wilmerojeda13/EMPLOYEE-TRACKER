@@ -1,7 +1,7 @@
 // require modules
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const table = require('console.table');
+const conTable = require('console.table');
 
 // Create a connection 
 const connection = mysql.createConnection({
@@ -49,7 +49,7 @@ const startQuestions =() => {
             viewEmployees();
             break;
         case 'Add a department':
-            ddDepartment();
+            addDepartment();
              break;
         case  'Add a role':
             addRole();
@@ -92,4 +92,30 @@ const viewEmployees = () => {
         startQuestions();
     });
 }
+
+//CREATING THE FUNCTION FOR THE ADD DEPARTMENT WITH THE USER QUESTIONS
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'department',
+            message: 'What is the department name?',
+    
+        }
+    ])
+    .then(answer => {
+        connection.query(
+            'INSERT INTO department (name) VALUES (?)',
+            [answer.department],
+            function (err,res) {
+                if(err) throw err;
+                console.log('Department Added!');
+                startQuestions();
+            }
+        );
+    })
+};
+
+//Add a add addjob function
+
 
