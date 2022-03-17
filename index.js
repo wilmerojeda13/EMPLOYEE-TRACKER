@@ -84,3 +84,12 @@ const viewRoles = () => {
     });
 }
 
+//CREATING THE FUNCTION FOR THE VIEW EMPLOYEES
+const viewEmployees = () => {
+    connection.query('SELECT employee.id, first_name, last_name, title, salary, department_id, manager_id',function(err,res) {
+        if(err) throw err;
+        console.table(res);
+        startQuestions();
+    });
+}
+
