@@ -74,3 +74,13 @@ const viewDepartment = () => {
         startQuestions();
     });
 };
+
+//CREATING THE FUNCTION FOR THE VIEW ROLES
+const viewRoles = () => {
+    connection.query('SELECT * FROM role',function(err,res) {
+        if(err) throw err;
+        console.table(res);
+        startQuestions();
+    });
+}
+
