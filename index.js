@@ -12,14 +12,13 @@ const connection = mysql.createConnection({
     database: 'employees'
 });
 
-
 const startMenu = () => {
     return inquirer
     .prompt({
         type: 'list',
         name: 'menu',
         message: 'What would you like to do?',
-        choices: ['View all departments', 'View all role', 'Add a Department','Add a role','Add an employee','Update an employee role']
+        choices: ['View all departments', 'View all role', 'Add a Department','Add a role','Add an employee','View all Employee','Update an employee role']
     }).then(response => {
         switch (response.menu) {
             case 'View all departments':
@@ -34,6 +33,9 @@ const startMenu = () => {
             case 'Add a role':
                 addRole();
                 break;
+                case 'View all Employee':
+                viewAllEmployee();
+                break;    
             case 'Add an employee':
                 addEmployee();
                 break;
@@ -108,6 +110,16 @@ const addRole = () => {
         let params = [answer.title, answer.salary,answer.departmentId]
         connection.promise().query(sql, params)
         console.log(`The role ${answer.title} Its been added to the db`);
+        startMenu()
+    })
+}
+
+//CREATE FUNCTION TO VIEW ALL EMPLOYEE
+const viewAllEmployee = () => {
+    let sql = `SELECT * FROM employee`;
+    connection.promise().query(sql)
+    .then(([rows,fields]) => {
+        (console.table(rows))
         startMenu()
     })
 }
