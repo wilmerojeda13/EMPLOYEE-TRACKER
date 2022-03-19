@@ -2,7 +2,7 @@
   "name": "employee-tracker",
   "version": "1.0.0",
   "description": "A command application that manage a company's employee database ",
-  "main": "index.js",
+  "main": "node index.js",
   "scripts": {
     "test": "node index.js"
   },
