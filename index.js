@@ -12,6 +12,22 @@ const connection = mysql.createConnection({
     database: 'employees'
 });
 
+// Intoduction for my employee tracker
+connection.connect(err => {
+    if(err) throw err;
+    console.log("***************************************************")
+    console.log("***************************************************")
+    console.log("****                                          *****")
+    console.log("****                                          *****")
+    console.log("****                                          *****")
+    console.log("****     WELCOME TO MY EMPLOYEE TRACKER       *****")
+    console.log("****                                          *****")
+    console.log("****                                          *****")
+    console.log("***************************************************")
+    console.log("***************************************************")
+    startMenu();
+})
+
 const startMenu = () => {
     return inquirer
     .prompt({
@@ -105,14 +121,17 @@ const addRole = () => {
             name:'departmentId',
             message:'What is the department id of this new role?'
         }
-    ]).then((answer) =>{
-        let sql = `INSERT INTO role (title,salary,department_id) VALUES (?,)`
-        let params = [answer.title, answer.salary,answer.departmentId]
+    ])
+    .then((answer) => {
+        let sql = `INSERT INTO role (title,salary,department_id) VALUES (?,?,?)`
+        let params = [answer.title,answer.salary,answer.departmentId]
         connection.promise().query(sql, params)
         console.log(`The role ${answer.title} Its been added to the db`);
         startMenu()
     })
 }
+        
+    
 
 //CREATE FUNCTION TO VIEW ALL EMPLOYEE
 const viewAllEmployee = () => {
@@ -149,17 +168,52 @@ const addEmployee = () => {
             message:'What is the id of the manager'
         }
     ]).then((answer) => {
-        const params = [answer.first_name, answer.las_name, answer.role_id, answer.manager_id]
-        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (????)`
+        if(answer.manager_id ==="") {
+            answer.manager_id = null
+        }
+        const params = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id]
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`
         connection.promise().query(sql,params)
+        .then((rows,fields) => {
+            console.log('The employee has been created');
+        startMenu()
+        })
     })
 }
 
 const updateEmployee = () => {
-    
+    const sqlEmployee = `SELECT employee.first_name,employee.last_name FROM employee`;
+    let employeeArr= []
+    connection.promise().query(sqlEmployee)
+    .then(([rows,fields]) => {
+        const first_name = rows.first_name;
+        const last_name = rows.last_name;
+        employeeArr = rows.map(rows => `${rows.first_name} ${rows.last_name}`)
+        inquirer
+        .prompt([
+            {
+                type:'list',
+                name:'fullName',
+                message:'Which employee role you want to update',
+                choices: employeeArr
+            },
+            {
+                type:'input',
+                name:'roleId',
+                message:'Insert the id of the employee new role (If you want to add new role for the employee select "add new role" from the main menu',
+            },
+        ]).then((answer) => {
+            let sql = `UPDATE employee
+            SET role_id = ?
+            WHERE first_name= ? AND last_name= ?`;
+            let params = [answer.role_id, answer.fullName.split(" ")[0], answer.fullName.split(" ")[0]]
+            connection.promise().query(sql,params)
+            console.log(`Role updated`);
+            startMenu()
+        })
+    })
 }
 
-startMenu()
 
 
 
