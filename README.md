@@ -30,7 +30,7 @@ Yes you can contribute to the project by sending me  an email.
 
 
 ## Testing:
-You can test the project by cloning the repository and start the project by installing the dependencies using npm i, and the next step your going to go the terminal and type node index.js to run the app
+You can test the project by cloning the repository and start the project by installing the dependencies using npm i, and the next step your going to go the terminal and type node index.js to run the project
 
 
 ## Screenshot:
