@@ -28,6 +28,7 @@ connection.connect(err => {
     startMenu();
 })
 
+// PROMPT USER QUESTIONS START MENU
 const startMenu = () => {
     return inquirer
     .prompt({
@@ -181,6 +182,7 @@ const addEmployee = () => {
     })
 }
 
+//CREATE FUNCTION TO UPDATE AN EMPLOYEE
 const updateEmployee = () => {
     const sqlEmployee = `SELECT employee.first_name,employee.last_name FROM employee`;
     let employeeArr= []
